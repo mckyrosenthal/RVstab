@@ -1,0 +1,441 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to RV stab’s documentation! &#8212; RV stab  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-RVstab">
+<span id="welcome-to-rv-stab-s-documentation"></span><h1>Welcome to RV stab’s documentation!<a class="headerlink" href="#module-RVstab" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="RVstab.RVPlanet">
+<em class="property">class </em><code class="descclassname">RVstab.</code><code class="descname">RVPlanet</code><span class="sig-paren">(</span><em>per=365.25</em>, <em>mass=1</em>, <em>e=0</em>, <em>omega=None</em>, <em>pomega=None</em>, <em>i=90.0</em>, <em>Omega=0</em>, <em>M=None</em>, <em>l=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVPlanet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Planet objects in the Radial velocity system</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>per</strong> – The period of the planet in days</li>
+<li><strong>mass</strong> – The mass of the planet in Jupiter masses</li>
+<li><strong>e</strong> – The planet’s eccentricity</li>
+<li><strong>omega</strong> – The planet’s argument of peripase, in degrees</li>
+<li><strong>pomega</strong> – The planet’s longitude of peripase, in degrees</li>
+<li><strong>i</strong> – The planet’s‘ inclination in degrees. The default i=90 corresponds to the planet orbiting perpendicular to
+the plane of the sky.</li>
+<li><strong>Omega</strong> – The planet’s longitude of ascending node, in degrees</li>
+<li><strong>M</strong> – The planet’s initial mean anomaly in degrees.</li>
+<li><strong>l</strong> – The planet’s initial mean longitude in degrees.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="RVstab.RVSystem">
+<em class="property">class </em><code class="descclassname">RVstab.</code><code class="descname">RVSystem</code><span class="sig-paren">(</span><em>mstar=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class for RV simulations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mstar</strong> – Mass of the star in the planetary system</li>
+<li><strong>epoch</strong> – Time that planetary parameters in simulation are referenced to</li>
+<li><strong>planets</strong> – Array of RVplanets classes representing the planets in the system</li>
+<li><strong>RV_files</strong> – Files containing radial velocity data. The first three columns of these files should be: date in JD, measured
+velocity in m/s, and error in m/s</li>
+<li><strong>offsets</strong> – Constant velocity offset for each data set</li>
+<li><strong>path_to_data</strong> – Optional prefix pointing to the location of the datasets.</li>
+<li><strong>RV_data</strong> – Array of the data contained in RV_files sorted by day. Initialized by <em>sort_data()</em></li>
+<li><strong>coords</strong> – Coordinate system of planets in the simulation. Must be one of: “astrocentric” or “jacobi”</li>
+<li><strong>sol_type</strong> – Method by which model velocities were calculated. Must be one of: “int” or “kep”</li>
+<li><strong>JDs</strong> – <dl class="docutils">
+<dt>Julian days of RV measurements. Array where each element of the array are the elements of one of the datasets.</dt>
+<dd>Loaded in from RV_files by calling load_data().</dd>
+</dl>
+</li>
+<li><strong>vels</strong> – <dl class="docutils">
+<dt>RV measurements themselves. Array where each element of the array are the elements of one of the datasets.</dt>
+<dd>Loaded in from RV_files by calling load_data().</dd>
+</dl>
+</li>
+<li><strong>errs</strong> – <dl class="docutils">
+<dt>Errors on RV measurements. Array where each element of the array are the elements of one of the datasets.</dt>
+<dd>Loaded in from RV_files by calling load_data().</dd>
+</dl>
+</li>
+<li><strong>vels_model</strong> – Theoretical radial velocities, calculated by calling log_like. These velocities are formatted so that they correspond
+to the <em>vels</em> variable</li>
+<li><strong>vels_plot</strong> – Theoretical radial velocities as one flattened array, used for plotting purposes.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="RVstab.RVSystem.add_planet">
+<code class="descname">add_planet</code><span class="sig-paren">(</span><em>per=365.25</em>, <em>mass=1</em>, <em>M=None</em>, <em>l=None</em>, <em>e=0</em>, <em>omega=None</em>, <em>pomega=None</em>, <em>i=90.0</em>, <em>Omega=0</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.add_planet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add planet to RV simulation. Angles are in degrees, planet mass is in Jupiter masses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>per</strong> – The period of the planet in days</li>
+<li><strong>mass</strong> – The mass of the planet in Jupiter masses</li>
+<li><strong>e</strong> – The planet’s eccentricity</li>
+<li><strong>omega</strong> – The planet’s argument of peripase, in degrees. Note you cannot pass both a longitude and argument of periapse.</li>
+<li><strong>pomega</strong> – The planet’s longitude of peripase, in degrees. Note you cannot pass both a longitude and argument of periapse.</li>
+<li><strong>i</strong> – The planet’s‘ inclination in degrees. The default i=90 corresponds to the planet orbiting perpendicular to
+the plane of the sky.</li>
+<li><strong>Omega</strong> – The planet’s longitude of ascending node, in degrees</li>
+<li><strong>M</strong> – The planet’s initial mean anomaly in degrees. Note you cannot pass both a mean anomaly and mean longitude.</li>
+<li><strong>l</strong> – The planet’s initial mean longitude in degrees. Note you cannot pass both a mean anomaly and mean longitude.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.calc_chi2">
+<code class="descname">calc_chi2</code><span class="sig-paren">(</span><em>jitter=0</em>, <em>reduced=False</em>, <em>non_planar=False</em>, <em>rms=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.calc_chi2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return chi^2 statistics for the Radial velocity model. Requires calling log_like() beforehand to initialize the model velocities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>jitter</strong> – Constant error term added in quadrature to the given errors.</li>
+<li><strong>reduced</strong> (<em>bool</em>) – If true, returns the reduced chi^2 value, i.e. chi^2/(data_points - degrees of freedom).</li>
+<li><strong>non-planar</strong> (<em>bool</em>) – If true, the reduced chi^2 is calculated assuming the planetary system was allowed to have mutual inclination, which adds two parameters per planet.</li>
+<li><strong>rms</strong> (<em>bool</em>) – If true, returns the root-mean-square deviation of the data from the model.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>chi_2</strong> – A measurement of the model’s goodness of fit – either the full chi^2, the reduced chi^2, or the RMS deviation, depending on the options passed to calc_chi2</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.load_data">
+<code class="descname">load_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load in data contained in self.RV_files</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.log_like">
+<code class="descname">log_like</code><span class="sig-paren">(</span><em>jitter=0</em>, <em>sol_type='int'</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.log_like" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the log likelihood for the radial velocity signal of the planets in the simulation compared to the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>jitter</strong> – Constant error term added in quadrature to the given errors.</li>
+<li><strong>sol_type</strong> – Method by which the model velocities are calculated. “int” uses the REBOUND N-body integrator to calculate the velocities, “kep” advances the planets along Keplerian orbits.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>log_like</strong> – The log likelihood of the model.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.orbit_stab">
+<code class="descname">orbit_stab</code><span class="sig-paren">(</span><em>periods=10000.0</em>, <em>pnts_per_period=100</em>, <em>outputs_per_period=1</em>, <em>integrator='whfast'</em>, <em>d_min=0</em>, <em>safe=True</em>, <em>check_dist=False</em>, <em>verbose=False</em>, <em>timing=False</em>, <em>plot=False</em>, <em>energy_err=False</em>, <em>save_fig=False</em>, <em>return_arr=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.orbit_stab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the planetary system in the model is stable. The default is that the system is stable if both planet’s semi-major axes remain between 50% and 150% of their initial values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>periods</strong> – Timescale on which to check for stablility, in units of the longest orbital period in the system.</li>
+<li><strong>pnts_per_period</strong> – Timestep of the simulation, in units of fraction of the smallest orbital period in the system</li>
+<li><strong>outputs_per_period</strong> – Number of times per smallest period in the system to check whether the stability conditions have been violated.</li>
+<li><strong>integrator</strong> – Integrator used for the N-body simulation. Must correspond to one of the integrators built in to REBOUND.</li>
+<li><strong>d_min</strong> – Smallest allowed distance, in AU, between particles in the simulation. System will be ruled non-stable if two particles pass within d_min</li>
+<li><strong>check_dist</strong> (<em>bool</em>) – Check planet-star distance instead of planet’s semi-major axis. System is ruled non-stable if the distance between the planet and star exceeds 150% of the planets initial apocenter distance or is less than 50% of the initial pericenter distance.</li>
+<li><strong>verbose</strong> (<em>bool</em>) – Print out information during integration, e.g. percentage of progress.</li>
+<li><strong>timing</strong> (<em>bool</em>) – Print out how long the integration took.</li>
+<li><strong>plot</strong> (<em>bool</em>) – Plot distance of each planet as a function of time after simulation.</li>
+<li><strong>energy_err</strong> (<em>bool</em>) – Print out the energy error in the simulation, i.e. the percent change in initial energy vs. final energy.</li>
+<li><strong>save_fig</strong> (<em>bool</em>) – Save plot made after simulation</li>
+<li><strong>return_arr</strong> (<em>bool</em>) – Return times, dist_arr variables, used to plot the planets distance, in addition to the stable boolean.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>stable</strong> – Whether or not the planetary system passed the stability criteria.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.periodogram">
+<code class="descname">periodogram</code><span class="sig-paren">(</span><em>pnts=10000</em>, <em>plot_per=True</em>, <em>show_perod=True</em>, <em>show_window=True</em>, <em>show_res=True</em>, <em>plot_range=0</em>, <em>ret=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.periodogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot periodograms to analyze RV data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pnts</strong> – Number of periods or frequencies to use in calculating the power.</li>
+<li><strong>plot_per</strong> (<em>bool</em>) – If true, make plot in terms of log period. Otherwise plot will be in terms of frequency=1/period</li>
+<li><strong>show_perod</strong> (<em>bool</em>) – Plot the periodogram</li>
+<li><strong>show_window</strong> (<em>bool</em>) – Plot the window function, which is the Fourier transform of the time sampling of the data.</li>
+<li><strong>show_res</strong> (<em>bool</em>) – Plot a periodogram of the residuals to the data</li>
+<li><strong>plot_range</strong> – If False, uses default plotting range. Otherwise, plot_range should be a 1x2 array corresponding to the minimum and maximum plotted values of period or frequency.</li>
+<li><strong>ret</strong> (<em>bool</em>) – If true, returns an array of the periods or frequencies, and then of the powers and phases used to make any of the plotted periodograms.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.plot_RV">
+<code class="descname">plot_RV</code><span class="sig-paren">(</span><em>save_plot=False</em>, <em>filename='tmp.pdf'</em>, <em>plot_theo=True</em>, <em>plot_data=True</em>, <em>res=False</em>, <em>jitter=0</em>, <em>ret_data=0</em>, <em>mark_times=[]</em>, <em>periods=5</em>, <em>pnts_per_period=100</em>, <em>sol_type='int'</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.plot_RV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a plot of the model RV from the planets in the simulation, the measured RV, or both.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>save_plot</strong> (<em>bool</em>) – Save the plot after its made.</li>
+<li><strong>filename</strong> – Filename of saved plot</li>
+<li><strong>plot_theo</strong> (<em>bool</em>) – If true, plots the model radial velocity</li>
+<li><strong>plot_data</strong> (<em>bool</em>) – If true, plots the RV data</li>
+<li><strong>res</strong> – If true, plots the residuals between the model and data. Requires plot_theo and plot_data to both be true.</li>
+<li><strong>jitter</strong> – Add a constant error term added in quadrature to the given errors, when plotting the data.</li>
+<li><strong>ret_data</strong> (<em>bool</em>) – Return the times,rad_vels arrays used to plot the theoretical RV curve</li>
+<li><strong>mark_times</strong> – Draw vertical lines at the indicated times</li>
+<li><strong>periods</strong> – Number of periods to plot if plot_data=False. Otherwise the theoretical data will be plotted from the first data point to the last data point.</li>
+<li><strong>pnts_per_period</strong> – Timestep for plotting theoretical RV curve, in units of the smallest orbital period in the system.</li>
+<li><strong>sol_type</strong> – Method by which the model velocities are calculated. “int” uses the REBOUND N-body integrator to calculate the velocities, “kep” advances the planets along Keplerian orbits.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.plot_phi">
+<code class="descname">plot_phi</code><span class="sig-paren">(</span><em>p</em>, <em>q</em>, <em>pert_ind</em>, <em>test_ind</em>, <em>periods=100.0</em>, <em>pnts_per_period=100.0</em>, <em>outputs_per_period=20.0</em>, <em>log_t=False</em>, <em>integrator='whfast'</em>, <em>plot=1</em>, <em>return_angs=0</em>, <em>dots=1</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.plot_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the resonant angle for two planets in the simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>p</strong><strong>,</strong><strong>q</strong> – The order of the mean-motion resonance, i.e. the resonance is taken to be p:q</li>
+<li><strong>pert_ind</strong> – The index of the self.planets array corresponding to the perturber, i.e. the massive planet in the resonance</li>
+<li><strong>test_ind</strong> – The index of the self.planets array corresponding to the test particle in the resonance</li>
+<li><strong>periods</strong> – Number of orbital periods of the outer planet to plot the resonant angle for.</li>
+<li><strong>pnts_per_period</strong> – Timestep for the integration, in units of number of points per smallest orbital period in the system.</li>
+<li><strong>outputs_per_period</strong> – Timestep for plot, in units of number of points per largest orbital period.</li>
+<li><strong>log_t</strong> (<em>bool</em>) – If true, plots log time on the x-axis</li>
+<li><strong>integrator</strong> – Integrator used for the N-body simulation. Must correspond to one of the integrators built in to REBOUND.</li>
+<li><strong>plot</strong> (<em>bool</em>) – Whether or not to plot the result after the integration</li>
+<li><strong>return_angs</strong> (<em>bool</em>) – If true, returns the array used used to calculate phi, i.e. mean longitude of the outer and inner particles, and the longitude of pericenter of the test particle.</li>
+<li><strong>dots</strong> (<em>bool</em>) – If true, make dots at each value of phi instead of a continuous line.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.ret_sim">
+<code class="descname">ret_sim</code><span class="sig-paren">(</span><em>epoch=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.ret_sim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize and return the rebound simulation associated with the RVSystem class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.sort_data">
+<code class="descname">sort_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.sort_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the data in RV_files into one array in order of increasing time</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RVstab.RVSystem.stab_logprob">
+<code class="descname">stab_logprob</code><span class="sig-paren">(</span><em>jitter=0</em>, <em>sol_type='int'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RVSystem.stab_logprob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper function for log_like and orbit_stab.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>jitter</strong> – Constant error term added in quadrature to the given errors.</li>
+<li><strong>sol_type</strong> – Method by which the model velocities are calculated. “int” uses the REBOUND N-body integrator to calculate the velocities, “kep” advances the planets along Keplerian orbits.</li>
+<li><strong>**kwargs</strong> – Keyword arguments to be passed to orbit_stab</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>log_like</strong> – If the system is stable (i.e. if orbit_stab == True), then the log likelihood is returned. Otherwise, the function returns -np.inf</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RVstab.RV_amp">
+<code class="descclassname">RVstab.</code><code class="descname">RV_amp</code><span class="sig-paren">(</span><em>m_star=1.0</em>, <em>m_p=0.00095458</em>, <em>omega=0.0</em>, <em>i=1.5707963267948966</em>, <em>per=365.25</em>, <em>f=0.0</em>, <em>e=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.RV_amp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the radial velocity amplitude due to a planet for a given true anomaly</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RVstab.kep_sol">
+<code class="descclassname">RVstab.</code><code class="descname">kep_sol</code><span class="sig-paren">(</span><em>t=0</em>, <em>t_p=0</em>, <em>e=0.1</em>, <em>per=100.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.kep_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve Kepler’s equation to find the true anomaly of a planet at a given time.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RVstab.ls_period">
+<code class="descclassname">RVstab.</code><code class="descname">ls_period</code><span class="sig-paren">(</span><em>freqs</em>, <em>times</em>, <em>obs</em>, <em>errs</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.ls_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the LS periodogram for a given set of data, given as (times,obs), with errors errs. The power is calculated
+at the frequencies that are given to the function. Uses a ‘floating mean,’ and weights the data points by the square
+of the error bars. See Zechmeister and Kurster (2009) for the formulas as well as a more in depth explanation</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RVstab.ls_sums">
+<code class="descclassname">RVstab.</code><code class="descname">ls_sums</code><span class="sig-paren">(</span><em>f</em>, <em>times</em>, <em>obs</em>, <em>w_i</em><span class="sig-paren">)</span><a class="headerlink" href="#RVstab.ls_sums" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intermediate function for calculating the sums in the LS periodogram. See Zechmeister and Kurster (2009) for
+details</p>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">RV stab</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Mickey Rosenthal.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
